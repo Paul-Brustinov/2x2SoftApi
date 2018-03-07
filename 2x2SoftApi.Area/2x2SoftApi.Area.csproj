@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D200E01E-D8D1-4A80-96D4-7128738350B1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>_2x2SoftApi.Area</RootNamespace>
+    <AssemblyName>2x2SoftApi.Area</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Crm\Address.cs" />
+    <Compile Include="Crm\Email.cs" />
+    <Compile Include="Crm\Person.cs" />
+    <Compile Include="Crm\PersonStore.cs" />
+    <Compile Include="Crm\Phone.cs" />
+    <Compile Include="Crm\WorkTime.cs" />
+    <Compile Include="Crm\WorkTimeDetail.cs" />
+    <Compile Include="Crm\WorkTimeDetailStore.cs" />
+    <Compile Include="Crm\WorkTimeStore.cs" />
+    <Compile Include="Common\Store\Cache.cs" />
+    <Compile Include="Common\Store\Entity.cs" />
+    <Compile Include="Common\Store\IEntity.cs" />
+    <Compile Include="Common\Store\Store.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\2x2SoftApi.Infrastructure\2x2SoftApi.Infrastructure.csproj">
+      <Project>{0a49ed0f-37da-410c-b4f0-a3f11d2471fb}</Project>
+      <Name>2x2SoftApi.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\A2v10.Data.Interfaces\A2v10.Data.Interfaces.csproj">
+      <Project>{1C5A0097-29A8-4157-80C0-B865CEAFCCCE}</Project>
+      <Name>A2v10.Data.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\A2v10.Data\A2v10.Data.csproj">
+      <Project>{3cefba76-9ed3-40b4-a844-cc17d960202f}</Project>
+      <Name>A2v10.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="../bootstrap.min.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery-3.0.0.min.js"></script>
+    <title></title>
+</head>
+<body>
+    <h1>Registration form</h1>
+    <div id="Register" class="form-group col-sm-12">
+        <div class="form-group row form-row">
+            <label for="i-login" class="col-sm-2 col-form-label">Login</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control"  id="i-login" />
+            </div>
+        </div>
+        <div class="form-group row form-row">
+            <label for="i-password" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-3">
+                <input type="password" class="form-control"  id="i-password" />
+            </div>
+        </div>
+        <div class="form-group row form-row">
+            <label for="i-password-confirmation" class="col-sm-2 col-form-label">Password confirmation</label>
+            <div class="col-sm-3">
+                <input type="password" class="form-control"  id="i-password-confirmation" />
+            </div>
+        </div>
+        <div class="form-group form-row col-sm-9">
+            <input type="button" class="btn btn-primary" value="Submit" id="i-submit" />
+        </div>
+        <div id="result"></div>
+        <div id="link"></div>
+    </div>
+
+    <script>
+        $(document).ready(
+            function () {
+                $("#i-submit").on("click", doRegister);
+            }
+        );
+
+        function doRegister() {
+            var loginLink = "../../api/Account/Register";
+            $.ajax({
+                url: loginLink,
+                type: "POST",
+                data: JSON.stringify({
+                    Email: $("#i-login").val(),
+                    Password: $("#i-password").val(),
+                    ConfirmPassword: $("#i-password-confirmation").val()
+                }),
+                dataType: "json",
+                contentType: "application/json",
+                statusCode: {
+                    201: function () { alert("Status code 201: Created") },
+                    200: function () { alert("Status code 200: Created") },
+                    400: function () { alert("Status code 400: Bad request") }
+                },
+                success: function (data, textStatus, xhr) {
+                    var locationHeader = xhr.getResponseHeader("Location");
+                    $("#link").html("<a href='" + locationHeader + "'> Информация по аккаунту")
+
+                    $("#result").text(data);
+
+
+                },
+                error: function (xhr, textStatus, xhr) {
+                    if (xhr.status == 404) {
+                        alert("404 Element no found")
+                    }
+                    else if (xhr.status == 400) {
+                        alert("400 Bad request")
+                    }
+                    else if (xhr.status == 500) {
+                        alert("500 Server error")
+                    }
+
+
+                    $("#result").text(xhr.responseText + " " + xhr.status);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

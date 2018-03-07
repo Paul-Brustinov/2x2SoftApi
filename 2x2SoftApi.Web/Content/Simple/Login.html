@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="../bootstrap.min.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery-3.0.0.min.js"></script>
+    <title></title>
+</head>
+<body>
+    <h1>Login form</h1>
+
+    <div id="Login" class="form-group col-sm-12">
+        <div class="form-group row form-row">
+            <label for="i-login" class="col-sm-2 col-form-label">Login</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="i-login" />
+            </div>
+        </div>
+        <div class="form-group row form-row">
+            <label for="i-password" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-3">
+                <input type="password" class="form-control" id="i-password" />
+            </div>
+        </div>
+        <div class="form-group form-row col-sm-12 btn-group-lg">
+            <input type="button" class="btn btn-primary" value="Submit" id="i-submit" />
+
+        </div>
+        <div class="form-group form-row col-sm-12 btn-block btn-group-lg">
+            <input type="button" class="btn btn-secondary" value="Info" id="i-info" /> 
+            <input type="button" class="btn btn-secondary" value="Info2" id="i-info2"> 
+            <input type="button" class="btn btn-secondary" value="GetMyWorks" id="i-get-my-works" /> 
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        $(document).ready(
+            function () {
+                $("#i-submit").on("click", doLogin);
+                $("#i-info").on("click", getInfo);
+                $("#i-info2").on("click", getInfo2);
+                $("#i-get-my-works").on("click", getMyWorks2);
+            }
+        );
+
+        function doLogin() {
+            var loginLink = "../../Token"; //"http://localhost:53973/Token";
+            $.ajax({
+                url: loginLink,
+                type: "POST",
+                data: { grant_type: 'password', username: $("#i-login").val(), password: $("#i-password").val(), RememberMe: true },
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                    $("#result").text(data);
+                    sessionStorage.setItem('tokenKey', data.access_token);
+                },
+                error: function (xhr) {
+                    $("#result").text(xhr.responseText + " " + xhr.status);
+                }
+            });
+        }
+
+        function getInfo() {
+            var token = sessionStorage.getItem("tokenKey");
+            var headers = {};
+            if (token) {
+                headers.Authorization = "Bearer " + token;
+            }
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:53973/api/Account/UserInfo",
+                headers: headers,
+                success: function (data) {
+                    $("#result").text(JSON.stringify(data));
+                },
+                error: function (xhr) {
+                    $("#result").text(xhr.responseText + " " + xhr.status);
+                }
+            });
+        }
+
+        function getInfo2() {
+            var token = sessionStorage.getItem("tokenKey");
+            var headers = {};
+            if (token) {
+                headers.Authorization = "Bearer " + token;
+            }
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:53973/api/Account/ManageInfo?returnUrl=%2F&generateState=true",
+                headers: headers,
+                success: function (data) {
+                    $("#result").text(JSON.stringify(data));
+                },
+                error: function (xhr) {
+                    $("#result").text(xhr.responseText + " " + xhr.status);
+                }
+            });
+        }
+
+        function getMyWorks() {
+            var token = sessionStorage.getItem("tokenKey");
+            var headers = {};
+            if (token) {
+                headers.Authorization = "Bearer " + token;
+            }
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:53973/api/WorkTime/MyWorkTimes",
+                headers: headers,
+                success: function (data) {
+                    $("#result").text(JSON.stringify(data));
+                },
+                error: function (xhr) {
+                    $("#result").text(xhr.responseText + " " + xhr.status);
+                }
+            });
+        }
+        function getMyWorks2() {
+            var token = sessionStorage.getItem("tokenKey");
+            //var headers = {};
+            //if (token) {
+            //    headers.Authorization = "Bearer " + token;
+            //}
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:53973/api/WorkTime/MyWorkTimes", true);
+            xhttp.setRequestHeader("Authorization", "Bearer " + token);
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    //console.log(this.responseText);
+                    if (this.responseText != "") {
+                        var a = JSON.parse(this.responseText);
+                        console.log(a.Email);
+                        $("#result").text(JSON.stringify(a));
+                    }
+                }
+            };
+            xhttp.send();
+        }
+    </script>
+</body>
+</html>
